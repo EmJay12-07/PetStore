@@ -39,3 +39,13 @@ export const GetAllPets = async () => {
     }
     return data
 };
+
+
+//GEt PEt by ID server action
+export const GetPetById = async (id: number) => {
+    const { data, error } = await supabase.from('pets').select('*').eq('pet_id', id)
+    if (error) {
+        throw error
+    }
+    return data
+}

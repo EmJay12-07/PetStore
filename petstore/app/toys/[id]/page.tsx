@@ -2,10 +2,10 @@
 
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { GetFoodById } from '@/utils/actions/foods'
+import { getToyById } from '@/utils/actions/toys'
 
 interface Product {
-    food_id: number;
+    toy_id: number;
     name: string;
     description: string;
     category: string;
@@ -29,7 +29,8 @@ export default function FoodDetail() {
         const id = Number(searchParams.get('id'))
         if (id) {
             const fetchData = async () => {
-                const data = await GetFoodById(id)
+                const data = await getToyById(id)
+                // @ts-ignore
                 setProduct(data[0])
             }
             fetchData()
@@ -47,10 +48,10 @@ export default function FoodDetail() {
     const addToCart = () => {
         if (product) {
             console.log('Add to cart:', product)
-            const existingItem = cart.find((item) => item.product.food_id === product.food_id)
+            const existingItem = cart.find((item) => item.product.toy_id === product.toy_id)
             if (existingItem) {
                 const updatedCart = cart.map((item) =>
-                    item.product.food_id === product.food_id
+                    item.product.toy_id === product.toy_id
                         ? { product: item.product, quantity: item.quantity + 1 }
                         : item
                 )

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import NavBar from "@/components/navBar"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,17 +17,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
+      {/* <head>
         <link rel="preconnect" href="<https://app.snipcart.com>" />
         <link rel="preconnect" href="<https://cdn.snipcart.com>" />
         <link
           rel="stylesheet"
           href="https://cdn.snipcart.com/themes/v3.2.0/default/snipcart.css"
         />
-      </head>
-      <body className={inter.className}>{children}
-      <script async src="https://cdn.snipcart.com/themes/v3.2.0/default/snipcart.js"></script>
-      <div hidden id="snipcart" data-api-key="MzEwZDg0MDctYjY4YS00YzcyLTlmMzAtZDVlNGI2YjAzNGI2NjM4NDY5NjM5MTM2NzYzNjc1"></div>
+      </head> */}
+      <body className={inter.className}>
+        <NavBar />
+        {children}
+      {/* <script async src="https://cdn.snipcart.com/themes/v3.2.0/default/snipcart.js"></script>
+      <div hidden id="snipcart" data-api-key="MzEwZDg0MDctYjY4YS00YzcyLTlmMzAtZDVlNGI2YjAzNGI2NjM4NDY5NjM5MTM2NzYzNjc1"></div> */}
       </body>
       
     </html>

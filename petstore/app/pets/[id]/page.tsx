@@ -2,7 +2,7 @@
 
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { GetFoodById } from '@/utils/actions/foods'
+import { GetPetById } from '@/utils/actions/pet'
 
 interface Product {
     food_id: number;
@@ -29,7 +29,7 @@ export default function FoodDetail() {
         const id = Number(searchParams.get('id'))
         if (id) {
             const fetchData = async () => {
-                const data = await GetFoodById(id)
+                const data = await GetPetById(id)
                 setProduct(data[0])
             }
             fetchData()

@@ -9,7 +9,7 @@ const TabComponent = () => {
 
   return (
     <section>
-      <div className="items-center px-8 mx-auto max-w-7xl lg:px-16 md:px-12">
+      <div className="pt-10 mt-10 items-center px-8 mx-auto max-w-7xl lg:px-16 md:px-12">
         <div className="justify-center w-full lg:p-10 mx-auto">
           <div>
             <ul className="grid grid-cols-3 mx-auto text-sm text-center text-black border-b">
