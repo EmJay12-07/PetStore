@@ -49,7 +49,7 @@ export default function FoodDetail() {
                                     aria-label="Add to Cart"
                                     data-item-id={product.food_id}
                                     data-item-price={product.price}
-                                    data-item-url={pathname}
+                                    data-item-url={`/foods/${product.food_id}?id=${product.food_id}`}
                                     data-item-image={product.image}
                                     data-item-name={product.name}
 
