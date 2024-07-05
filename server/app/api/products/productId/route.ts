@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server"
 
 
 export interface ISnipcartProduct {
@@ -10,19 +10,23 @@ export interface ISnipcartProduct {
     image: string
 }
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
-    const { productId } = req.query;
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url)
+    const productId = searchParams.get('productId')
 
     // Fetch the products from the API
     const response = await fetch('/api/products');
     const products = await response.json();
-
+// @ts-ignore
     const product = products.find(p => p.id === productId);
     if (!product) {
-        res.status(404).json({});
-        return;
+        return NextResponse.json({
+            error: "Product not found"
+        }, {
+            status: 404
+        });
     }
     const snipcartProduct: ISnipcartProduct = { ...product, image: product?.image ?? "" }
 
-    res.status(200).json(snipcartProduct);
+    return NextResponse.json(snipcartProduct);
 }

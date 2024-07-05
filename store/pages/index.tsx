@@ -34,7 +34,7 @@ export default function Home({ products }: IProductListProps) {
 export const getStaticProps: GetStaticProps = async (context) => {
     const res = await fetch('https://api-indol-psi.vercel.app/api/products');
     const products: IProduct[] = await res.json();
-    console.log(products);
+    // console.log(products);
 
     return {
         props: {
