@@ -64,17 +64,17 @@ const Product = (props: IProductProps) => {
                     ${props.product.price.toFixed(2)}
                 </div>
                 <button
-                    className='snipcart-add-item'
-                    style={buttonStyle}
-                    data-item-id={props.product.id}
-                    data-item-name={props.product.name}
-                    data-item-category={props.product.category}
-                    data-item-price={props.product.price.toString()}
-                    data-item-url={props.product.url}
-                    data-item-image={props.product.image.toString()}
-                >
-                    Add to cart
-                </button>
+    className='snipcart-add-item'
+    style={buttonStyle}
+    data-item-id={props.product.id}
+    data-item-name={props.product.name}
+    data-item-category={props.product.category}
+    data-item-price={props.product.price.toString()}
+    data-item-url={props.product.url.replace('//', '/')} // replace double slashes with a single slash
+    data-item-image={props.product.image.toString()}
+>
+    Add to cart
+</button>
             </div>
         </div>
     );
