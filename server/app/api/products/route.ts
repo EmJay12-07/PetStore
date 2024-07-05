@@ -39,6 +39,8 @@ export const products = [
     }
 ]
 
-export async function GET() {
+
+// GET /api/products
+export async function GET(request: Request) {
     return NextResponse.json(products)
 }
