@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const {productId} = req.query;
 
     // Fetch the products from the API
-    const response = await fetch('https://api-indol-psi.vercel.app/api/products');
+    const response = await fetch('/api/products');
     const products: IProduct[] = await response.json();
 
     const product: IProduct | undefined = products.find(p => p.id === productId);
