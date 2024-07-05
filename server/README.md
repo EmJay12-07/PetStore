@@ -1,3 +1,20 @@
+![Next.js e-commerce tutorial](https://snipcart.com/media/205931/nextjs_spa_e-commerce.png)
+
+This post/tutorial focuses on Next.js SPA for e-commerce.
+
+Tutorial steps 🛠
+- Setting up the development environment
+- Defining a layout
+- Customising your homepage
+- Pre-rendering data and importing components
+- Importing Snipcart
+- Product validation
+- Styling your app
+
+-> Follow the [tutorial here](https://snipcart.com/blog/next-js-ecommerce-tutorial-example).
+
+-> Try the demo [here](https://snipcart-next-2021.vercel.app/).
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -8,17 +25,15 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.tsx`.
+
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 ## Learn More
 
