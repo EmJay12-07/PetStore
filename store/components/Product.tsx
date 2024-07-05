@@ -70,7 +70,7 @@ const Product = (props: IProductProps) => {
     data-item-name={props.product.name}
     data-item-category={props.product.category}
     data-item-price={props.product.price.toString()}
-    data-item-url={props.product.url.replace('//', '/')} // replace double slashes with a single slash
+    data-item-url={props.product.url.replace(/([^:]\/)\/+/g, "$1")}
     data-item-image={props.product.image.toString()}
 >
     Add to cart
