@@ -10,7 +10,7 @@ export interface ISnipcartProduct {
     image: string
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
     const { productId } = req.query;
 
     // Fetch the products from the API
