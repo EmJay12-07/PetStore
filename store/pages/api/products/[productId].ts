@@ -1,7 +1,4 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
 import {NextApiRequest, NextApiResponse} from "next";
-import {products} from "../../index";
 import {IProduct} from "../../../components/Product";
 
 export interface ISnipcartProduct {
@@ -13,8 +10,13 @@ export interface ISnipcartProduct {
     image: string
 }
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const {productId} = req.query;
+
+    // Fetch the products from the API
+    const response = await fetch('https://api-indol-psi.vercel.app/api/products');
+    const products: IProduct[] = await response.json();
+
     const product: IProduct | undefined = products.find(p => p.id === productId);
     if (!product) {
         res.status(404).json({});

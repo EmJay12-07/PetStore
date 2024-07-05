@@ -16,6 +16,7 @@ interface IProductProps {
 }
 
 const Product = (props: IProductProps) => {
+    console.log(props.product, "Props");
     const productStyle: CSSProperties = {
         display: 'inline-block',
         width: '300px',
