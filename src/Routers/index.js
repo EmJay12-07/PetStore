@@ -98,7 +98,7 @@ router.get('/orders', (req, res) => {
 
     // Get all orders from the database
     orderFunction.getOrders((orders) => {
-        // console.log(JSON.stringify(orders, null, 2), 'All orders');
+        console.log(JSON.stringify(orders, null, 2), 'All orders');
         res.render('orders', { title: 'Your Orders', orders, email });
     });
 });

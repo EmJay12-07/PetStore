@@ -54,7 +54,7 @@ app.set('view engine', 'ejs');
 
 
 app.get('/profile', requiresAuth(), (req, res) => {
-  res.send(JSON.stringify(req.oidc.user));
+  res.render('profile', { user: req.oidc.user });
 });
 
 // 404 handler

@@ -9,42 +9,104 @@
         /* Add your CSS styles here */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 200px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
         }
 
         .order {
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
         }
 
         .order h2 {
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .order-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-details p {
             margin: 0;
+        }
+
+        .items {
+            padding-left: 20px;
+        }
+
+        .item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .item p {
+            margin: 5px 0;
         }
     </style>
 </head>
 
 <body>
-    <h1>
-        <%= title %>
-    </h1>
-    <% orders.forEach(order=> { %>
-        <div class="order">
-            <h2>Order: <%= order.tracking_id %>
-            </h2>
-            <p>State: <%= order.state %>
-            </p>
-            <p>Provider: <%= order.provider %>
-            </p>
-            <p>Value: <%= order.value %>
-            </p>
-            <p>Items: <%= order.email %>
-            </p>
-            <p>Date: <%= order.created_at %>
-            </p>
-            <!-- Add more fields as needed -->
+    <%- include('NavBar') %>
+        <div class="container">
+            <h1>
+                <%= title %>
+            </h1>
+            <% orders.forEach(order=> { %>
+                <div class="order">
+                    <h2>Order: <%= order.orderId %>
+                    </h2>
+                    <div class="order-details">
+                        <div>
+                            <p>State: <%= order.state %>
+                            </p>
+                            <p>Date: <%= order.createdAt %>
+                            </p>
+                        </div>
+                        <div>
+                            <p>Total Amount: Ksh<%= order.totalAmount.toFixed(2) %>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="items">
+                        <% order.items.forEach(item=> { %>
+                            <div class="item">
+                                <p><strong>
+                                        <%= item.productName %>
+                                    </strong></p>
+                                <p>Price: $<%= item.productPrice.toFixed(2) %>
+                                </p>
+                                <p>Quantity: <%= item.quantity %>
+                                </p>
+                                <p>Total Price: Ksh<%= item.totalPrice.toFixed(2) %>
+                                </p>
+                            </div>
+                            <% }); %>
+                    </div>
+                </div>
+                <% }); %>
         </div>
-        <% }); %>
 </body>
 
 </html>

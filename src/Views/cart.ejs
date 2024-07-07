@@ -143,40 +143,42 @@
 </head>
 
 <body>
-    <h1>
-        <%= title %>
-    </h1>
-    <div class="cart">
-        <% if (cart.length===0) { %>
-            <p>Your cart is empty.</p>
-            <% } else { %>
-                <% let totalForAll=0; %>
-                    <% cart.forEach(item=> { %>
-                        <% let totalForItem=parseFloat(item.productPrice) * parseInt(item.quantity); %>
-                            <% totalForAll +=totalForItem; %>
-                                <div class="cart-item">
-                                    <img src="<%= item.productImage %>" alt="<%= item.productName %>">
-                                    <div class="cart-item-details">
-                                        <h2>
-                                            <%= item.productName %>
-                                        </h2>
-                                        <p class="price">Price: <%= item.productPrice %>
-                                        </p>
-                                        <p class="quantity">Quantity: <%= item.quantity %>
-                                        </p>
-                                        <button>Remove</button>
-                                        <p>Total for item: <%= totalForItem.toFixed(2) %>
-                                        </p>
+    <%- include('NavBar') %>
+        <h1>
+            <%= title %>
+        </h1>
+        <div class="cart">
+            <% if (cart.length===0) { %>
+                <p>Your cart is empty.</p>
+                <% } else { %>
+                    <% let totalForAll=0; %>
+                        <% cart.forEach(item=> { %>
+                            <% let totalForItem=parseFloat(item.productPrice) * parseInt(item.quantity); %>
+                                <% totalForAll +=totalForItem; %>
+                                    <div class="cart-item">
+                                        <img src="<%= item.productImage %>" alt="<%= item.productName %>">
+                                        <div class="cart-item-details">
+                                            <h2>
+                                                <%= item.productName %>
+                                            </h2>
+                                            <p class="price">Price: <%= item.productPrice %>
+                                            </p>
+                                            <p class="quantity">Quantity: <%= item.quantity %>
+                                            </p>
+                                            <button>Remove</button>
+                                            <p>Total for item: <%= totalForItem.toFixed(2) %>
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <% }); %>
-                                    <div class="total-section">
-                                        <p class="total">You will Pay:KSH <%= totalForAll.toFixed(2) %>
-                                        </p>
-                                    </div>
-                                    <button class="intaSendPayButton" data-amount="10" data-currency="KES">Pay Now</button>
-                                    <% } %>
-    </div>
+                                    <% }); %>
+                                        <div class="total-section">
+                                            <p class="total">You will Pay:KSH <%= totalForAll.toFixed(2) %>
+                                            </p>
+                                        </div>
+                                        <button class="intaSendPayButton" data-amount="10" data-currency="KES">Pay
+                                            Now</button>
+                                        <% } %>
+        </div>
 </body>
 <script>
     const cart = JSON.parse('<%- JSON.stringify(cart) %>');
