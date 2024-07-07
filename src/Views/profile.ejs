@@ -71,7 +71,7 @@
             <img src="<%= user.picture %>" alt="Profile Picture">
             <h2><%= user.nickname %></h2>
             <p>Email: <%= user.email %></p>
-            <p>Order Date: <%= new Date(user.updated_at).toLocaleString() %></p>
+            <p>Last Updated: <%= new Date(user.updated_at).toLocaleString() %></p>
         </div>
         <div class="actions">
             <a href="/logout">Logout</a>        
