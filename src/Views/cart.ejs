@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .cart {
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+
+        .cart-item {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 10px 0;
+            transition: transform 0.3s;
+        }
+
+        .cart-item:hover {
+            transform: scale(1.02);
+        }
+
+        .cart-item img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .cart-item h2 {
+            color: #444;
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .cart-item p {
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .cart-item .price {
+            font-size: 1.2em;
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .cart-item .quantity {
+            font-size: 1em;
+            color: #444;
+        }
+
+        .cart-item button {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .cart-item button:hover {
+            background-color: #4cae4c;
+        }
+
+        .checkout-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .checkout-button:hover {
+            background-color: #0056b3;
+        }
+
+        .total-section {
+            margin-top: 20px;
+            text-align: right;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .total-section .total {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        @media (min-width: 768px) {
+            .cart-item {
+                flex-direction: row;
+                text-align: left;
+            }
+
+            .cart-item img {
+                max-width: 200px;
+                margin-right: 20px;
+            }
+
+            .cart-item-details {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+            }
+        }
+    </style>
+    <script src="https://unpkg.com/intasend-inlinejs-sdk@4.0.0/build/intasend-inline.js"></script>
+</head>
+
+<body>
+    <h1>
+        <%= title %>
+    </h1>
+    <div class="cart">
+        <% if (cart.length===0) { %>
+            <p>Your cart is empty.</p>
+            <% } else { %>
+                <% let totalForAll=0; %>
+                    <% cart.forEach(item=> { %>
+                        <% let totalForItem=parseFloat(item.productPrice) * parseInt(item.quantity); %>
+                            <% totalForAll +=totalForItem; %>
+                                <div class="cart-item">
+                                    <img src="<%= item.productImage %>" alt="<%= item.productName %>">
+                                    <div class="cart-item-details">
+                                        <h2>
+                                            <%= item.productName %>
+                                        </h2>
+                                        <p class="price">Price: <%= item.productPrice %>
+                                        </p>
+                                        <p class="quantity">Quantity: <%= item.quantity %>
+                                        </p>
+                                        <button>Remove</button>
+                                        <p>Total for item: <%= totalForItem.toFixed(2) %>
+                                        </p>
+                                    </div>
+                                </div>
+                                <% }); %>
+                                    <div class="total-section">
+                                        <p class="total">You will Pay:KSH <%= totalForAll.toFixed(2) %>
+                                        </p>
+                                    </div>
+                                    <button class="intaSendPayButton" data-amount="10" data-currency="KES">Pay Now</button>
+                                    <% } %>
+    </div>
+</body>
+<script>
+    const cart = JSON.parse('<%- JSON.stringify(cart) %>');
+
+    new window.IntaSend({
+        publicAPIKey: "ISPubKey_test_eda9a8be-bbc9-4f5d-a0ef-54a85960789c",
+        live: false
+    })
+        .on("COMPLETE", (results) => {
+            fetch("/checkout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    results,
+                    cart
+                })
+            })
+        })
+        .on("IN-PROGRESS", (results) => {
+            fetch("/checkout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    results,
+                    cart
+                })
+            })
+        })
+</script>
+
+</html>

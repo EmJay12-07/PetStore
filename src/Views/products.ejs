@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .product {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .product h2 {
+            color: #444;
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+
+        .product p {
+            color: #666;
+            margin: 10px 0;
+            height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product .details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .product .price {
+            font-size: 1.2rem;
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .product .category {
+            font-size: 1rem;
+            color: #999;
+            margin: 10px 0;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .quantity-controls button {
+            padding: 8px 16px;
+            color: #fff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .quantity-controls button:hover {
+            background-color: #2980b9;
+        }
+
+        .quantity-controls input {
+            width: 50px;
+            text-align: center;
+            margin: 0 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .product button {
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .product button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <%- include('NavBar') %> <!-- Assuming NavBar is another EJS partial -->
+    </div>
+
+    <h1><%= title %></h1>
+
+    <div class="products">
+        <% products.forEach((product, index) => { %>
+        <div class="product">
+            <h2><%= product.name %></h2>
+            <div class="image-container">
+                <img src="<%= product.image %>" alt="<%= product.name %>">
+            </div>
+            <p><%= product.description %></p>
+            <div class="details">
+                <p class="price">Price: <%= product.price %></p>
+                <p class="category">Category: <%= product.category %></p>
+                <div class="quantity-controls">
+                    <button type="button" id="decrement-<%= index %>">-</button>
+                    <input type="number" id="quantity-<%= index %>" name="quantity" value="1" min="1">
+                    <button type="button" id="increment-<%= index %>">+</button>
+                </div>
+                <form action="/add-to-cart" method="post">
+                    <input type="hidden" name="productId" value="<%= product.id %>">
+                    <input type="hidden" id="hidden-quantity-<%= index %>" name="quantity" value="1">
+                    <button type="submit" id="add-to-cart-<%= index %>">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+        <script>
+            document.getElementById('decrement-<%= index %>').addEventListener('click', function () {
+                var quantityInput = document.getElementById('quantity-<%= index %>');
+                var quantity = parseInt(quantityInput.value, 10);
+                if (quantity > 1) {
+                    quantityInput.value = quantity - 1;
+                    document.getElementById('hidden-quantity-<%= index %>').value = quantityInput.value;
+                }
+            });
+
+            document.getElementById('increment-<%= index %>').addEventListener('click', function () {
+                var quantityInput = document.getElementById('quantity-<%= index %>');
+                var quantity = parseInt(quantityInput.value, 10);
+                quantityInput.value = quantity + 1;
+                document.getElementById('hidden-quantity-<%= index %>').value = quantityInput.value;
+            });
+
+            document.getElementById('quantity-<%= index %>').addEventListener('change', function () {
+                var quantityInput = document.getElementById('quantity-<%= index %>');
+                var quantity = parseInt(quantityInput.value, 10);
+                if (quantity < 1) quantityInput.value = 1;
+                document.getElementById('hidden-quantity-<%= index %>').value = quantityInput.value;
+            });
+
+            document.getElementById('add-to-cart-<%= index %>').addEventListener('click', function () {
+                console.log('Adding product to cart: ', <%= JSON.stringify(product) %>);
+                console.log('Quantity: ', document.getElementById('quantity-<%= index %>').value);
+            });
+        </script>
+        <% }); %>
+    </div>
+</body>
+
+</html>

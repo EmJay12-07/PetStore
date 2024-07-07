@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .order {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .order h2 {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>
+        <%= title %>
+    </h1>
+    <% orders.forEach(order=> { %>
+        <div class="order">
+            <h2>Order: <%= order.tracking_id %>
+            </h2>
+            <p>State: <%= order.state %>
+            </p>
+            <p>Provider: <%= order.provider %>
+            </p>
+            <p>Value: <%= order.value %>
+            </p>
+            <p>Items: <%= order.email %>
+            </p>
+            <p>Date: <%= order.created_at %>
+            </p>
+            <!-- Add more fields as needed -->
+        </div>
+        <% }); %>
+</body>
+
+</html>
