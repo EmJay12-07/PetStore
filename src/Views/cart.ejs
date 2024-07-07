@@ -10,7 +10,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
+            margin: 150px;
             padding: 0;
             background-color: #f4f4f4;
             display: flex;
@@ -172,11 +172,13 @@
                                     </div>
                                     <% }); %>
                                         <div class="total-section">
-                                            <p class="total">You will Pay:KSH <%= totalForAll.toFixed(2) %>
+                                            <p class="total">You will Pay: KSH <%= totalForAll.toFixed(2) %>
                                             </p>
                                         </div>
-                                        <button class="intaSendPayButton" data-amount="10" data-currency="KES">Pay
-                                            Now</button>
+                                        <button class="intaSendPayButton"
+        data-amount="<%= totalForAll.toFixed(2).toString() %>"
+        data-currency="KES"
+        style="background-color: #4CAF50; color: white; border: none; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">Pay Now</button>
                                         <% } %>
         </div>
 </body>
