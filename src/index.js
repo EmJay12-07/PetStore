@@ -17,12 +17,12 @@ const config = {
   baseURL: 'http://localhost:3000',
   clientID: 'lAc7oZl39yM1OXm4hOxJS7bKkyppEW0Z',
   issuerBaseURL: 'https://dev-n6mzinz2owdr1le8.us.auth0.com',
-  clientSecret : ' 2J9hydhjnchd',
+  clientSecret: ' 2J9hydhjnchd',
   authorizationParams: {
     response_type: 'code id_token',
     audience: 'http://localhost:3000',
     scope: 'openid profile email',
-  },  
+  },
 };
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
@@ -53,7 +53,10 @@ app.set('view engine', 'ejs');
 
 
 
-app.get('/profile', requiresAuth(), (req, res) => {
+app.get('/profile', (req, res) => {
+  if (!req.oidc.isAuthenticated()) {
+    res.redirect('/login');
+  }
   res.render('profile', { user: req.oidc.user });
 });
 
