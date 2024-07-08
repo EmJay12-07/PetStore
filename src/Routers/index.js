@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../Data/db');
 const cartFunction = require('../Controllers/cartFunction');
 const orderFunction = require('../Controllers/orderFunction');
+const adminFunction = require('../Controllers/admiFuction');
 
 const { auth } = require('express-openid-connect');
 const { requiresAuth } = require('express-openid-connect');
@@ -102,6 +103,41 @@ router.get('/orders', (req, res) => {
         res.render('orders', { title: 'Your Orders', orders, email });
     });
 });
+
+router.get('/admin', requiresAuth(), (req, res) => {
+    //check if user is logged in
+    if (!req.oidc.isAuthenticated()) {
+        res.redirect('/login');
+    }
+
+    const user = req.oidc.user;
+    const email = user.email;
+
+    // Check if the user's email is admin@store.com
+    if (email !== 'admin@store.com') {
+        // Redirect the user to the home page or send an error response
+        res.redirect('/');
+        // Or send an error response
+        // res.status(403).send('Unauthorized');
+        return;
+    }
+
+    res.render('admins', { title: 'Admin' }, email);    
+    
+});
+
+// Route to get products
+router.get('/admin/products', requiresAuth(), (req, res) => {
+    res.render('Partials/products', { products });
+});
+
+// Route to get orders
+router.get('/admin/orders', requiresAuth(), (req, res) => {
+    adminFunction.getOrders((orders) => {
+        res.render('Partials/orders', { orders });
+    });
+});
+
 
 
 
