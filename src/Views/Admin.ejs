@@ -1,83 +1,106 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            margin: 150px;
+            font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
         }
+
         .sidebar {
             position: fixed;
-            top: 120px;
+            top: 90px;
             bottom: 0;
             left: 0;
-            padding: 48px 0 0;
-            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            width: 250px;
+            padding: 20px 0;
             background-color: #343a40;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
-        .sidebar-sticky {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 48px;
-            height: calc(100vh - 48px);
-            padding-top: .5rem;
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
+
         .sidebar .nav-link {
             font-weight: 500;
             color: #cfd8dc;
+            margin: 10px 0;
+            width: 100%;
+            text-align: center;
         }
-        .sidebar .nav-link.active {
-            color: #f8f9fa;
-        }
+
+        .sidebar .nav-link.active,
         .sidebar .nav-link:hover {
             color: #f8f9fa;
+            background-color: #495057;
+            border-radius: 5px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .container-fluid {
+            padding: 0;
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        p {
+            color: #666;
         }
     </style>
 </head>
+
 <body>
     <%- include('NavBar') %>
-    
-    <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#" onclick="loadContent('/admin/products')">
-                                All Products
-                            </a>
-                        </li>
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="loadContent('/admin/users')">
-                                All Users
-                            </a>
-                        </li> -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="loadContent('/admin/orders')">
-                                All Orders
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" id="content-area">
-                <!-- Content will be loaded here -->
-            </main>
-        </div>
-    </div>
-    <script>
-        function loadContent(url) {
-            fetch(url)
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('content-area').innerHTML = html;
-                })
-                .catch(err => console.error('Error loading content:', err));
-        }
-    </script>
+
+        <nav class="sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="loadContent('/admin/products')">
+                            All Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="loadContent('/admin/orders')">
+                            All Orders
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="content" id="content-area">
+            <h2>Admin Dashboard</h2>
+            <p>Click on the sidebar links to view content.</p>
+        </main>
+
+        <script>
+            function loadContent(url) {
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('content-area').innerHTML = html;
+                    })
+                    .catch(err => console.error('Error loading content:', err));
+            }
+        </script>
 </body>
+
 </html>

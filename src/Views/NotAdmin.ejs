@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Not Admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      text-align: center;
+      padding: 50px;
+    }
+    
+    h1 {
+      color: #333;
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    
+    p {
+      color: #666;
+      font-size: 24px;
+      margin-bottom: 40px;
+    }
+    
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Access Denied</h1>
+  <p>You are not authorized to access the admin page.</p>
+  <p>Logged in as: <%= email %></p>
+  <a href="/">Go to Home Page</a>
+</body>
+</html>

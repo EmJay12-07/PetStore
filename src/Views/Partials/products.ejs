@@ -1,31 +1,84 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<%- include('../NavBar') %>
-<div class="container" style="margin-top: 150px;">
-   
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <!-- <th scope="col">ID</th> -->
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Image</th>
-                <th scope="col">Description</th>
-                <th scope="col">URL</th>
-                <th scope="col">Category</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% products.forEach(product => { %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+
+        .container {
+            margin-top: 60px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #e9ecef;
+        }
+
+        .table tbody tr:hover {
+            background-color: #dee2e6;
+        }
+
+        .table img {
+            border-radius: 5px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../NavBar') %>
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <!-- <td><%= product.id %></td> -->
-                    <td><%= product.name %></td>
-                    <td><%= product.price %></td>
-                    <td><img src="<%= product.image %>" alt="<%= product.name %>" style="width: 100px;"></td>
-                    <td><%= product.description %></td>
-                    <td><a href="<%= product.url %>">Link</a></td>
-                    <td><%= product.category %></td>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">URL</th>
+                    <th scope="col">Category</th>
                 </tr>
-            <% }) %>
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                <% products.forEach(product => { %>
+                    <tr>
+                        <td><%= product.name %></td>
+                        <td><%= product.price %></td>
+                        <td><img src="<%= product.image %>" alt="<%= product.name %>" style="width: 100px;"></td>
+                        <td><%= product.description %></td>
+                        <td><a href="<%= product.url %>">Link</a></td>
+                        <td><%= product.category %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

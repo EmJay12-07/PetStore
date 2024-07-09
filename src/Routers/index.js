@@ -5,140 +5,147 @@ const cartFunction = require('../Controllers/cartFunction');
 const orderFunction = require('../Controllers/orderFunction');
 const adminFunction = require('../Controllers/admiFuction');
 
-const { auth } = require('express-openid-connect');
 const { requiresAuth } = require('express-openid-connect');
 
-//products
 const products = require('../Data/products');
 
+// Middleware to set authentication and user data
+router.use((req, res, next) => {
+    res.locals.isAuthenticated = req.oidc.isAuthenticated();
+    res.locals.user = req.oidc.user;
+    next();
+});
 
-
-// Routes
+// Home route
 router.get('/', (req, res) => {
     res.render('Hero', { title: 'Products', products });
 });
+
+// Products route
 router.get('/products', (req, res) => {
     res.render('products', { title: 'Products', products });
-}
-);
+});
 
+// Add to cart route
 router.post('/add-to-cart', (req, res) => {
-    if (!req.body.productId) {
-        res.status(400).send({ error: 'Product ID is required' });
-        return;
+    const { productId, quantity } = req.body;
+    if (!productId) {
+        return res.status(400).send({ error: 'Product ID is required' });
     }
-    const productId = req.body.productId;
-    const quantity = parseInt(req.body.quantity, 10)
     const product = products.find(p => p.id === productId);
     if (!product) {
-        res.status(404).send({ error: 'Product not found' });
-        return;
+        return res.status(404).send({ error: 'Product not found' });
     }
-    // adding the product to the cart table sqlite
-    cartFunction.addProductToCart(product, quantity);
+    cartFunction.addProductToCart(product, parseInt(quantity, 10));
     res.redirect('/cart');
 });
 
-router.get('/cart', (req, res) => {
-    //check if user is logged in
-    if (!req.oidc.isAuthenticated()) {
-        res.redirect('/login');
-    }
-
+// Cart route
+router.get('/cart', requiresAuth(), (req, res) => {
     const user = req.oidc.user;
-    const email = user.email;
-
-    // Get the cart from the database
     cartFunction.getCart((cart) => {
-        res.render('cart', { title: 'Your Cart', cart, email });
+        res.render('cart', { title: 'Your Cart', cart, email: user.email });
     });
 });
 
-let orders = []; // Initialize your in-memory database
-
-router.post('/checkout', (req, res) => {
-    //check if user is logged in
-    if (!req.oidc.isAuthenticated()) {
-        res.redirect('/login');
-    }
+// Checkout route
+router.post('/checkout', requiresAuth(), (req, res) => {
     const user = req.oidc.user;
-    const email = user.email;
-    const PaymentResults = req.body.results;
-    const items = req.body.cart;
+    const { results, cart } = req.body;
     const order = {
-        paymentProvider: PaymentResults.provider,
-        totalAmount: PaymentResults.value,
-        email: email,
-        state: PaymentResults.state,
-        items: items
+        paymentProvider: results.provider,
+        totalAmount: results.value,
+        email: user.email,
+        state: results.state,
+        items: cart
     };
-    // Save the order to the database
     orderFunction.createOrder(order, (err, orderId) => {
         if (err) {
-            // Handle error (maybe log it and send a 500 response)
             console.error(err);
-            res.status(500).send({ message: 'Error creating order' });
-        } else {
-            //clear cart
-            cartFunction.clearCart();
-            // Order was created successfully
-            res.status(200).send({ message: 'Order created', orderId: orderId });
+            return res.status(500).send({ message: 'Error creating order' });
         }
-    });
+        cartFunction.clearCart();
 
+        // Send email to the user
+        sendOrderConfirmationEmail(user.email, order)
+            .then(() => {
+                res.status(200).send({ message: 'Order created', orderId });
+            })
+            .catch((emailError) => {
+                console.error('Error sending email:', emailError);
+                res.status(200).send({ message: 'Order created', orderId });
+            });
+    });
 });
 
-router.get('/orders', (req, res) => {
-    //check if user is logged in
-    if (!req.oidc.isAuthenticated()) {
-        res.redirect('/login');
-    }
+// Helper function to send order confirmation email
+function sendOrderConfirmationEmail(email, order) {
+    return new Promise((resolve, reject) => {
+        // Nodemailer for sending email
+        const transporter = nodemailer.createTransport({
+            // Email transport configuration
+            service: 'gmail',
+            auth: {
+                user: 'tckiprotich@outlook.com',
+                pass: 'lcye gkdc nzat nlqw',
+            },
+        });
 
+        const mailOptions = {
+            from: 'tckiprotich@outlook.com',
+            to: email,
+            subject: 'Order Confirmation',
+            text: `
+          Thank you for your order!
+          
+          Order Details:
+          Payment Provider: ${order.paymentProvider}
+          Total Amount: ${order.totalAmount}
+          State: ${order.state}
+          Items: ${order.items.map(item => item.name).join(', ')}
+        `
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+                reject(error);
+            } else {
+                console.log('Email sent:', info.response);
+                resolve();
+            }
+        });
+    });
+}
+
+// Orders route
+router.get('/orders', requiresAuth(), (req, res) => {
     const user = req.oidc.user;
-    const email = user.email;
-
-    // Get all orders from the database
     orderFunction.getOrders((orders) => {
         console.log(JSON.stringify(orders, null, 2), 'All orders');
-        res.render('orders', { title: 'Your Orders', orders, email });
+        res.render('orders', { title: 'Your Orders', orders, email: user.email });
     });
 });
 
+// Admin route
 router.get('/admin', requiresAuth(), (req, res) => {
-    //check if user is logged in
-    if (!req.oidc.isAuthenticated()) {
-        res.redirect('/login');
-    }
-
     const user = req.oidc.user;
-    const email = user.email;
-
-    // Check if the user's email is admin@store.com
-    if (email !== 'admin@store.com') {
-        // Redirect the user to the home page or send an error response
-        res.redirect('/');
-        // Or send an error response
-        // res.status(403).send('Unauthorized');
-        return;
+    if (user.email.toLowerCase() !== 'admin@store.com') {
+        return res.render('NotAdmin', { title: 'Not Admin', email: user.email });
     }
-
-    res.render('admins', { title: 'Admin' }, email);    
-    
+    res.render('Admin', { title: 'Admin', email: user.email });
 });
 
-// Route to get products
+// Admin products route
 router.get('/admin/products', requiresAuth(), (req, res) => {
     res.render('Partials/products', { products });
 });
 
-// Route to get orders
+// Admin orders route
 router.get('/admin/orders', requiresAuth(), (req, res) => {
     adminFunction.getOrders((orders) => {
         res.render('Partials/orders', { orders });
     });
 });
-
-
-
 
 module.exports = router;
