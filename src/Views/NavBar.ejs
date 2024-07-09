@@ -35,6 +35,31 @@
             text-decoration: none;
             color: #000;
         }
+        .login-button {
+    background-color: #008CBA; /* Blue */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.logout-button {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
 
         header {
             position: fixed;
@@ -194,7 +219,7 @@
     <header>
         <a href="/" class="logo"><img src="https://shenliktech.com/shen/assets/img/logo.png" alt="">
             <span>PETSTORE.</span></a>
-
+    
         <ul class="navbarr">
             <li><a href="/" class="active">Home</a></li>
             <!-- <li><a href="/pets">Pets</a></li>
@@ -202,8 +227,10 @@
             <li><a href="/foods">Pet Foods</a></li> -->
             <li><a href="/profile">Account</a></li>
             <li><a href="/cart">Cart</a></li>
+            <li><a href="/login" class="login-button">Login</a></li>
+            <li><a href="/logout" class="logout-button">Logout</a></li>
         </ul>
-
+    
         <div class="mainn">
             <a href="https://www.instagram.com/" class="instagram"><i class="fab fa-instagram"></i></a>
             <a href="https://www.linkedin.com/" class="linkedin"><i class="fab fa-linkedin"></i></a>

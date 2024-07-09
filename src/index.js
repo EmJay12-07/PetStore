@@ -1,32 +1,33 @@
 const express = require('express');
+require('dotenv').config();
 const routes = require('./Routers');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
+
 const app = express();
 const port = 3000;
+
 const { auth } = require('express-openid-connect');
-const { requiresAuth } = require('express-openid-connect');
-const { Socket } = require('dgram');
 
 const config = {
   authRequired: false,
   auth0Logout: true,
-  secret: 'a long, randomly-generated string stored in env',
   baseURL: 'http://localhost:3000',
   clientID: 'lAc7oZl39yM1OXm4hOxJS7bKkyppEW0Z',
   issuerBaseURL: 'https://dev-n6mzinz2owdr1le8.us.auth0.com',
-  clientSecret: ' 2J9hydhjnchd',
-  authorizationParams: {
-    response_type: 'code id_token',
-    audience: 'http://localhost:3000',
-    scope: 'openid profile email',
-  },
+  secret: 'LONG_RANDOM_STRING'
 };
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 app.use(auth(config));
+
+// // req.isAuthenticated is provided from the auth router
+// app.get('/', (req, res) => {
+//   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out')
+// });
+
 
 app.use(session({
   secret: 'petstore',
@@ -46,10 +47,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-// req.isAuthenticated is provided from the auth router
-// app.get('/', (req, res) => {
-//   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-// });
 
 
 
