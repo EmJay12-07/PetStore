@@ -87,8 +87,8 @@ function sendOrderConfirmationEmail(email, order) {
             // Email transport configuration
             service: 'gmail',
             auth: {
-                user: 'tckiprotich@outlook.com',
-                pass: 'lcye gkdc nzat nlqw',
+                user: 'tckiprotich@gmail.com',
+                pass: 'ochcfiggaafyrgyh',
             },
         });
 
