@@ -4,6 +4,7 @@ const db = require('../Data/db');
 const cartFunction = require('../Controllers/cartFunction');
 const orderFunction = require('../Controllers/orderFunction');
 const adminFunction = require('../Controllers/admiFuction');
+const nodemailer = require('nodemailer');
 
 const { requiresAuth } = require('express-openid-connect');
 
