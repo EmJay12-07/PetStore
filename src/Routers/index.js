@@ -122,7 +122,8 @@ function sendOrderConfirmationEmail(email, order) {
 // Orders route
 router.get('/orders', requiresAuth(), (req, res) => {
     const user = req.oidc.user;
-    orderFunction.getOrders((orders) => {
+    const email = user.email;
+    orderFunction.getOrders(email, (orders) => {
         console.log(JSON.stringify(orders, null, 2), 'All orders');
         res.render('orders', { title: 'Your Orders', orders, email: user.email });
     });

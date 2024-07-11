@@ -22,8 +22,8 @@ function createOrder(order, callback) {
     });
 }
 
-function getOrders(callback) {
-    db.all(`SELECT * FROM Orders`, [], (err, orders) => {
+function getOrders(email, callback) {
+    db.all(`SELECT * FROM Orders WHERE email = ?`, [email], (err, orders) => {
         if (err) {
             throw err;
         }
@@ -49,8 +49,6 @@ function getOrders(callback) {
         }
     });
 }
-
-
 
 
 module.exports = {
